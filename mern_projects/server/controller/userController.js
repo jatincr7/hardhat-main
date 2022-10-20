@@ -6,16 +6,18 @@ import fs from "fs";
 
 export const register = function (req, res) {
   try {
+  
     upload(req, res, async (err) => {
       if (err) {
-        console.log(err)
+
       }
       else {
+        if (['image/jpeg', 'image/png', 'image/jpg'].includes(req.file.mimetype)) {
         var newUser = new User({
           hash_password: bcrypt.hashSync(req.body.password, 10),
           profileImg: {
             data: fs.readFileSync("uploads/" + req.file.filename),
-            contentType: 'image/png'
+            contentType: req.file.mimetype
           },
           email: req.body.email
         });
@@ -23,26 +25,32 @@ export const register = function (req, res) {
         if (isUserExist) {
           return res.status(401).send({
             message: "User with this email already exist "
-          });  
+          });
         }
         await newUser.save(function (err, user) {
           if (err) {
-            console.log("error while savinf the user >>>>",err)
+           
             return res.status(400).send({
               message: err
             });
           } else {
             user.hash_password = undefined;
-            console.log("user>>>>>",user)
             return res.status(200).send(user);
           }
         
         });
+        }
+        else {
+          return res.status(400).send({
+            message: "Only file with extension jpg or png is allowed"
+          });
+        }
+        
       }
     
     })
   } catch (e) {
-    console.log("sign in error >>>>>>", e)
+  
   }
 }
 
@@ -55,7 +63,7 @@ export const signIn = function (req, res) {
       if (!user || !user.comparePassword(req.body.password)) {
         return res.status(401).json({ message: 'Authentication failed. Invalid user or password.' });
       }
-      console.log('user >>>>>>',user)
+      
       return res.status(200).json({ token: jwt.sign({ email: user.email},'BUZZINGO',{
         expiresIn: "2h",
       }), data: user });

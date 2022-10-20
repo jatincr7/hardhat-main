@@ -17,10 +17,9 @@ function Login(props) {
       await setUserSession(response.data.token, response.data.data);
       await props.history.push('/dashboard');
     }).catch(error => {
-      console.log('eror',error)
       setLoading(false);
-       if (error.response.status === 401) setError(error.response.data.message);
-      else setError("Something went wrong. Please try again later.");
+      //  if (error.response.status === 401) setError(error.response.data.message);
+      // else setError("Something went wrong. Please try again later.");
     });
   }
 

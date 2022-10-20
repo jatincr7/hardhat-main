@@ -25,7 +25,7 @@ import UserModel from '../models/user.js'
              message: "Some error occured while uploading the profile picture"
          })
      } catch (e) {
-         console.log('errrrrrrrrr>>>>>>>>>>>>>',e)
+         
      }
 
     
