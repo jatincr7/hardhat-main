@@ -7,6 +7,7 @@ import fs from "fs";
 export const register = function (req, res) {
   try {
   
+    
     upload(req, res, async (err) => {
       if (err) {
 
@@ -75,4 +76,3 @@ export const signIn = function (req, res) {
     })
   }
   };
-
