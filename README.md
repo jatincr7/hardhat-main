@@ -1,2 +1,2 @@
 # hardhat-main
-Creating a  voting system .
+Created a  voting system .
